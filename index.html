@@ -634,6 +634,7 @@ Current user: ${userName}, studying at ${userCollege || 'their university'}, int
 They have registered for ${registeredEvents.size} opportunities so far.
 You help students find hackathons, internships, research opportunities, coding contests, and scholarships.
 Be concise, practical, and encouraging. Use bullet points where helpful. Max 200 words.`;
+
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
