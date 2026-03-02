@@ -635,9 +635,9 @@ They have registered for ${registeredEvents.size} opportunities so far.
 You help students find hackathons, internships, research opportunities, coding contests, and scholarships.
 Be concise, practical, and encouraging. Use bullet points where helpful. Max 200 words.`;
 
-  const GEMINI_API_KEY = 'AIza-your-key-here';
+const GEMINI_API_KEY = 'AIzaSyAmO1pYLhiV4Ktc6eH57mLFQn689LPLJOs';
 
-fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${AIzaSyAmO1pYLhiV4Ktc6eH57mLFQn689LPLJOs}`, {
+fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
