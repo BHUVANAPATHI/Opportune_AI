@@ -634,25 +634,31 @@ Current user: ${userName}, studying at ${userCollege || 'their university'}, int
 They have registered for ${registeredEvents.size} opportunities so far.
 You help students find hackathons, internships, research opportunities, coding contests, and scholarships.
 Be concise, practical, and encouraging. Use bullet points where helpful. Max 200 words.`;
-
-const GEMINI_API_KEY = 'AIzaSyAmO1pYLhiV4Ktc6eH57mLFQn689LPLJOs';
-
-fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    contents: [{
-      parts: [{ text: userContext + '\n\nUser: ' + msg }]
-    }]
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: userContext,
+      messages: [{ role: 'user', content: msg }]
+    })
   })
-})
-.then(res => res.json())
-.then(data => {
-  const reply = data.candidates?.[0]?.content?.parts?.[0]?.text
-    || getFallbackResponse(msg);
-  addChatMsg(reply, 'ai');
-})
-.catch(() => addChatMsg(getFallbackResponse(msg), 'ai'));
+  .then(res => res.json())
+  .then(data => {
+    const ti = document.getElementById('typing-ind');
+    if(ti) ti.remove();
+    const reply = data.content && data.content[0] && data.content[0].text
+      ? data.content[0].text
+      : getFallbackResponse(msg);
+    addChatMsg(reply, 'ai');
+  })
+  .catch(() => {
+    const ti = document.getElementById('typing-ind');
+    if(ti) ti.remove();
+    addChatMsg(getFallbackResponse(msg), 'ai');
+  });
+}
 
 function getFallbackResponse(msg) {
   const lower = msg.toLowerCase();
